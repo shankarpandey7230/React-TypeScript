@@ -66,3 +66,127 @@ This project provides a comprehensive guide to integrating TypeScript with React
 Each section is presented with relevant code snippets and explanations, making it an ideal resource for developers looking to deepen their understanding of TypeScript in React applications.
 
 
+## Setup
+
+```sh
+npm create vite@latest ReactTypeScript -- --template react-ts
+```
+
+## Remove Boilerplate 
+# React & TypeScript
+- .tsx -file extension
+
+## 01 - Component Return
+
+- TypeScript infers JSX.Element, helps if no return
+
+```tsx
+// TypeScript infers JSX.Element
+// this will trigger error
+function Component() {}
+export default Component;
+```
+
+- set function return type
+
+```tsx
+function Component(): JSX.Element | null | string {
+  return null;
+  return 'hello';
+  return <h2>hello from typescript</h2>;
+}
+export default Component;
+```
+
+## 02- Props
+
+```tsx
+function App() {
+  return (
+    <main>
+      <Component name='peter' id={123} />
+    </main>
+  );
+}
+
+export default App;
+```
+
+- inline types
+
+```tsx
+function Component({ name, id }: { name: string; id: number }) {
+  return (
+    <div>
+      <h1>Name : {name}</h1>
+      <h1>ID : {id}</h1>
+    </div>
+  );
+}
+export default Component;
+```
+
+- type or interface
+- props object or {}
+
+```tsx
+type ComponentProps = {
+  name: string;
+  id: number;
+};
+
+function Component({ name, id }: ComponentProps) {
+  return (
+    <div>
+      <h1>Name : {name}</h1>
+      <h1>ID : {id}</h1>
+    </div>
+  );
+}
+export default Component;
+```
+
+- children prop
+
+```tsx
+function App() {
+  return (
+    <main>
+      <Component name='peter' id={123}>
+        <h2>hello world</h2>
+      </Component>
+    </main>
+  );
+}
+
+export default App;
+```
+
+- React.ReactNode
+- PropsWithChildren
+
+```tsx
+import { type PropsWithChildren } from 'react';
+
+type ComponentProps = {
+  name: string;
+  id: number;
+  children: React.ReactNode;
+};
+
+// type ComponentProps = PropsWithChildren<{
+//   name: string;
+//   id: number;
+// }>;
+
+function Component({ name, id, children }: ComponentProps) {
+  return (
+    <div>
+      <h2>Name : {name}</h2>
+      <h2>ID : {id}</h2>
+      {children}
+    </div>
+  );
+}
+export default Component;
+```

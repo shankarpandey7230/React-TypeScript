@@ -2,7 +2,9 @@
 // import Component from "./learningFolder/01-return/index";
 // import Component from "./learningFolder/props/index";
 
-import Component from "./learningFolder/03-state";
+import Component from "./learningFolder/04-events";
+
+// import Component from "./learningFolder/03-state";
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
         <h1>Hello world</h1>
       </Component>
       <Component name="Astha" id={ 1234}/> */}
+      {/* <Component/> */}
       <Component/>
 
     </main>

@@ -321,3 +321,228 @@ function Component() {
 }
 export default Component;
 ```
+The FormData API is a web technology that allows developers to easily construct and manage sets of key/value pairs representing form fields and their values.It is commonly used to send form data, including files, from a client (such as a web browser) to a server in a format that can be easily processed. The FormData API provides a way to programmatically create and manipulate form data, making it useful for AJAX requests and handling file uploads in web applications.
+
+
+##05 -Challenge - PRofile Card
+
+- initial approach (won't work as expected)
+
+``` tsx
+type ProfileCardProps = {
+  type:'basic'|'advanced';
+  name:string;
+  email?:string;
+
+};
+
+function Component(props:ProfileCArdProps){
+  const {type, name, email}=props;
+  const alertType = type==='basic'?'success':'danger';
+  const className= ` alert alert-${alertType}`;
+  return (
+    <article className={className}>
+    <h2>user:{name}</h2>
+    {email&& <h2>email:{email}</h2>}
+    </article>
+  )
+
+}
+export default Component
+```
+
+- another approach(won't work)
+
+
+```tsx
+type ProfileCardProps={
+  type:'basic'|'advanced';
+  name:string;
+  email?:string;
+};
+
+function Component (props:ProfileCardProps){
+  const {type, name, email}= props;
+
+  const alertType = type==='basic'?'success':'danger';
+  const className= `alert alert-${alertType}`;
+  return (
+    <article className={className}>
+    <h2>user:{name}</h2>
+    {type===advanced?<h2>email:{email}</h2>:null}
+    </article>
+  )
+}
+export default Component
+```
+
+- final approach
+
+```tsx
+type BasicProfileCardProps = {
+  type: 'basic';
+  name: string;
+};
+
+type AdvancedProfileCardProps = {
+  type: 'advanced';
+  name: string;
+  email: string;
+};
+type ProfileCardProps = BasicProfileCardProps | AdvancedProfileCardProps;
+function Component(props: ProfileCardProps) {
+  const { type, name } = props;
+  if (type === 'basic')
+    return (
+      <article className='alert alert-success'>
+        <h2>user : {name}</h2>
+      </article>
+    );
+
+  return (
+    <article className='alert alert-danger'>
+      <h2>user : {name}</h2>
+      <h2>email : {props.email}</h2>
+    </article>
+  );
+}
+export default Component;
+```
+
+## 06 - Context
+
+- basic context
+
+```tsx
+import { createContext, useContext } from 'react';
+
+const ThemeProviderContext = createContext<{ name: string } | undefined>(
+  undefined
+);
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProviderContext.Provider value={{ name: 'susan' }}>
+      {children}
+    </ThemeProviderContext.Provider>
+  );
+}
+
+export const useTheme = () => {
+  const context = useContext(ThemeProviderContext);
+
+  if (context === undefined)
+    throw new Error('useTheme must be used within a ThemeProvider');
+
+  return context;
+};
+```
+
+basic-index.tsx
+
+```tsx
+import { useTheme, ThemeProvider } from './basic-context';
+
+function ParentComponent() {
+  return (
+    <ThemeProvider>
+      <Component />
+    </ThemeProvider>
+  );
+  return <Component />;
+}
+
+function Component() {
+  const context = useTheme();
+  console.log(context);
+
+  return (
+    <div>
+      <h2>random component</h2>
+    </div>
+  );
+}
+export default ParentComponent;
+```
+
+context.tsx
+
+```tsx
+import { createContext, useState, useContext } from 'react';
+
+type Theme = 'light' | 'dark' | 'system';
+
+type ThemeProviderState = {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+};
+
+const ThemeProviderContext = createContext<ThemeProviderState | undefined>(
+  undefined
+);
+
+type ThemeProviderProps = {
+  children: React.ReactNode;
+  defaultTheme?: Theme;
+};
+
+export function ThemeProvider({
+  children,
+  defaultTheme = 'system',
+}: ThemeProviderProps) {
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  return (
+    <ThemeProviderContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeProviderContext.Provider>
+  );
+}
+
+export const useTheme = () => {
+  const context = useContext(ThemeProviderContext);
+
+  if (context === undefined)
+    throw new Error('useTheme must be used within a ThemeProvider');
+
+  return context;
+};
+```
+
+Component.tsx
+
+```tsx
+import { useTheme, ThemeProvider } from './context';
+
+function ParentComponent() {
+  return (
+    <ThemeProvider>
+      <Component />
+    </ThemeProvider>
+  );
+  return <Component />;
+}
+
+function Component() {
+  const context = useTheme();
+  console.log(context);
+
+  return (
+    <div>
+      <h2>random component</h2>
+      <button
+        onClick={() => {
+          if (context.theme === 'dark') {
+            context.setTheme('system');
+            return;
+          }
+          context.setTheme('dark');
+        }}
+        className='btn btn-center'
+      >
+        toggle theme
+      </button>
+    </div>
+  );
+}
+export default ParentComponent;
+```

@@ -18,11 +18,11 @@ export default tseslint.config({
   languageOptions: {
     // other options...
     parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
@@ -31,11 +31,11 @@ export default tseslint.config({
 
 ```js
 // eslint.config.js
-import react from 'eslint-plugin-react'
+import react from "eslint-plugin-react";
 
 export default tseslint.config({
   // Set the react version
-  settings: { react: { version: '18.3' } },
+  settings: { react: { version: "18.3" } },
   plugins: {
     // Add the react plugin
     react,
@@ -44,11 +44,10 @@ export default tseslint.config({
     // other rules...
     // Enable its recommended rules
     ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
+    ...react.configs["jsx-runtime"].rules,
   },
-})
+});
 ```
-
 
 This project provides a comprehensive guide to integrating TypeScript with React. It covers initial setup using vite and TypeScript, demonstrates various React and TypeScript concepts through clear examples, and delves into more advanced topics.Key aspects include
 
@@ -58,13 +57,12 @@ This project provides a comprehensive guide to integrating TypeScript with React
 - Event Handling: Guides on typing events in React, such as form submissions and input changes.
 - Complex Component Structures: Discusses complex use cases like conditional prop rendering based on type values.
 - Context API with TypeScript:Provides a deep dive into using React's Context API in a TypeScript environment.
-- Reducers and Global State Management: Includes examples of setting up reducers with TypeScript and using them in React Components. 
+- Reducers and Global State Management: Includes examples of setting up reducers with TypeScript and using them in React Components.
 - Data Fetching: Demonstrates fetching data with TypeScript validation using tools like Zod, Axios and React Query.
 - Redux Toolkit (RTK) Integration: Shows how to integrate Redux Toolkit in a TypeScript-React Setup, including creating slices and using hooks.
 - Practical Application with Task Management: Concludes with a practical task management application, emphasizing localStorage use and handling task state.
 
 Each section is presented with relevant code snippets and explanations, making it an ideal resource for developers looking to deepen their understanding of TypeScript in React applications.
-
 
 ## Setup
 
@@ -72,7 +70,8 @@ Each section is presented with relevant code snippets and explanations, making i
 npm create vite@latest ReactTypeScript -- --template react-ts
 ```
 
-## Remove Boilerplate 
+## Remove Boilerplate
+
 # React & TypeScript
 
 - .tsx -file extension
@@ -93,7 +92,7 @@ export default Component;
 ```tsx
 function Component(): JSX.Element | null | string {
   return null;
-  return 'hello';
+  return "hello";
   return <h2>hello from typescript</h2>;
 }
 export default Component;
@@ -105,7 +104,7 @@ export default Component;
 function App() {
   return (
     <main>
-      <Component name='peter' id={123} />
+      <Component name="peter" id={123} />
     </main>
   );
 }
@@ -153,7 +152,7 @@ export default Component;
 function App() {
   return (
     <main>
-      <Component name='peter' id={123}>
+      <Component name="peter" id={123}>
         <h2>hello world</h2>
       </Component>
     </main>
@@ -167,7 +166,7 @@ export default App;
 - PropsWithChildren
 
 ```tsx
-import { type PropsWithChildren } from 'react';
+import { type PropsWithChildren } from "react";
 
 type ComponentProps = {
   name: string;
@@ -198,23 +197,23 @@ export default Component;
 - by default [] is type never
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function Component() {
-  const [text, setText] = useState('shakeAndBake');
+  const [text, setText] = useState("shakeAndBake");
   const [number, setNumber] = useState(1);
   const [list, setList] = useState<string[]>([]);
 
   return (
     <div>
-      <h2 className='mb-1'>hello from typescript</h2>
+      <h2 className="mb-1">hello from typescript</h2>
       <button
-        className='btn btn-center'
+        className="btn btn-center"
         onClick={() => {
           // setText(1);
           // setNumber('hello');
           // setList([1, 3]);
-          setList(['hello', 'world']);
+          setList(["hello", "world"]);
         }}
       >
         click me
@@ -223,61 +222,62 @@ function Component() {
   );
 }
 export default Component;
- 
 ```
 
-
 ## 04 -Events
+
 - inline functions infers object type
 
 When you provide the exact HTML element type in the angle brackets(<>), like HTMLInputElement in your case, you're telling TypeSCript exactly what kind of element the event is coming from. This helps TypeScript provide accurate suggestions and error checking based on the properties and methods that are specific to that kind of element. For example, an HTMLInputElement has properties like value and checked that other elements don't have. By specifying the exact element type, TypeScript can help you avoid mistakes and write safe code.
 
-```tsx 
-import {useState} from 'react';
-function Component(){
-  const [text, setText]=useState('');
-  const [email, setEmail] = useState('');
+```tsx
+import { useState } from "react";
+function Component() {
+  const [text, setText] = useState("");
+  const [email, setEmail] = useState("");
 
-const handleChange= (e:React.ChangeEvent<HTMLInputElememt>)=>{
-  console.log(e.target.value);
-  setEmail(e.target.value)
-}
+  const handleChange = (e: React.ChangeEvent<HTMLInputElememt>) => {
+    console.log(e.target.value);
+    setEmail(e.target.value);
+  };
 
-return (
-  <section>
-  <h2>events example</h2>
-  <form className='form'>
-  <input
-   className='form-input mb-1' 
-   type='text' name='text'
-    value={text} 
-    onChange={(e)=>setText(e.target.value)}/>
-   <input
-          type='email'
-          className='form-input mb-1'
+  return (
+    <section>
+      <h2>events example</h2>
+      <form className="form">
+        <input
+          className="form-input mb-1"
+          type="text"
+          name="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <input
+          type="email"
+          className="form-input mb-1"
           value={email}
           onChange={handleChange}
         />
-        <button type='submit' className='btn btn-block'>
+        <button type="submit" className="btn btn-block">
           submit
         </button>
-  </form>
-  </section>
-)
+      </form>
+    </section>
+  );
 }
 export default Component;
 ```
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 type Person = {
   name: string;
 };
 
 function Component() {
-  const [text, setText] = useState('');
-  const [email, setEmail] = useState('');
+  const [text, setText] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
@@ -289,30 +289,30 @@ function Component() {
     // const formData = new FormData(e.currentTarget);
     const formData = new FormData(e.target as HTMLFormElement);
     // const data = Object.fromEntries(formData);
-    const text = formData.get('text') as string;
+    const text = formData.get("text") as string;
     const person: Person = { name: text };
   };
 
   return (
     <section>
       <h2>events example</h2>
-      <form onSubmit={handleSubmit} className='form'>
+      <form onSubmit={handleSubmit} className="form">
         <input
-          className='form-input mb-1'
-          type='text'
-          name='text'
+          className="form-input mb-1"
+          type="text"
+          name="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
 
         <input
-          type='email'
-          className='form-input mb-1'
+          type="email"
+          className="form-input mb-1"
           value={email}
           onChange={handleChange}
-          name='email'
+          name="email"
         />
-        <button type='submit' className='btn btn-block'>
+        <button type="submit" className="btn btn-block">
           submit
         </button>
       </form>
@@ -321,86 +321,83 @@ function Component() {
 }
 export default Component;
 ```
-The FormData API is a web technology that allows developers to easily construct and manage sets of key/value pairs representing form fields and their values.It is commonly used to send form data, including files, from a client (such as a web browser) to a server in a format that can be easily processed. The FormData API provides a way to programmatically create and manipulate form data, making it useful for AJAX requests and handling file uploads in web applications.
 
+The FormData API is a web technology that allows developers to easily construct and manage sets of key/value pairs representing form fields and their values.It is commonly used to send form data, including files, from a client (such as a web browser) to a server in a format that can be easily processed. The FormData API provides a way to programmatically create and manipulate form data, making it useful for AJAX requests and handling file uploads in web applications.
 
 ##05 -Challenge - PRofile Card
 
 - initial approach (won't work as expected)
 
-``` tsx
+```tsx
 type ProfileCardProps = {
-  type:'basic'|'advanced';
-  name:string;
-  email?:string;
-
+  type: "basic" | "advanced";
+  name: string;
+  email?: string;
 };
 
-function Component(props:ProfileCArdProps){
-  const {type, name, email}=props;
-  const alertType = type==='basic'?'success':'danger';
-  const className= ` alert alert-${alertType}`;
+function Component(props: ProfileCArdProps) {
+  const { type, name, email } = props;
+  const alertType = type === "basic" ? "success" : "danger";
+  const className = ` alert alert-${alertType}`;
   return (
     <article className={className}>
-    <h2>user:{name}</h2>
-    {email&& <h2>email:{email}</h2>}
+      <h2>user:{name}</h2>
+      {email && <h2>email:{email}</h2>}
     </article>
-  )
-
+  );
 }
-export default Component
+export default Component;
 ```
 
 - another approach(won't work)
 
-
 ```tsx
-type ProfileCardProps={
-  type:'basic'|'advanced';
-  name:string;
-  email?:string;
+type ProfileCardProps = {
+  type: "basic" | "advanced";
+  name: string;
+  email?: string;
 };
 
-function Component (props:ProfileCardProps){
-  const {type, name, email}= props;
+function Component(props: ProfileCardProps) {
+  const { type, name, email } = props;
 
-  const alertType = type==='basic'?'success':'danger';
-  const className= `alert alert-${alertType}`;
+  const alertType = type === "basic" ? "success" : "danger";
+  const className = `alert alert-${alertType}`;
   return (
     <article className={className}>
-    <h2>user:{name}</h2>
-    {type===advanced?<h2>email:{email}</h2>:null}
+      <h2>user:{name}</h2>
+      {type === advanced ? <h2>email:{email}</h2> : null}
     </article>
-  )
+  );
 }
-export default Component
+export default Component;
 ```
 
 - final approach
 
 ```tsx
 type BasicProfileCardProps = {
-  type: 'basic';
+  type: "basic";
   name: string;
 };
 
 type AdvancedProfileCardProps = {
-  type: 'advanced';
+  type: "advanced";
   name: string;
   email: string;
 };
 type ProfileCardProps = BasicProfileCardProps | AdvancedProfileCardProps;
 function Component(props: ProfileCardProps) {
   const { type, name } = props;
-  if (type === 'basic')
+  if (type === "basic")
     return (
-      <article className='alert alert-success'>
+      <article className="alert alert-success">
         <h2>user : {name}</h2>
       </article>
     );
 
   return (
-    <article className='alert alert-danger'>
+    <article className="alert alert-danger">
       <h2>user : {name}</h2>
       <h2>email : {props.email}</h2>
     </article>
@@ -414,7 +411,7 @@ export default Component;
 - basic context
 
 ```tsx
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 const ThemeProviderContext = createContext<{ name: string } | undefined>(
   undefined
@@ -422,7 +419,7 @@ const ThemeProviderContext = createContext<{ name: string } | undefined>(
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProviderContext.Provider value={{ name: 'susan' }}>
+    <ThemeProviderContext.Provider value={{ name: "susan" }}>
       {children}
     </ThemeProviderContext.Provider>
   );
@@ -432,7 +429,7 @@ export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
 
   if (context === undefined)
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
 
   return context;
 };
@@ -441,7 +438,7 @@ export const useTheme = () => {
 basic-index.tsx
 
 ```tsx
-import { useTheme, ThemeProvider } from './basic-context';
+import { useTheme, ThemeProvider } from "./basic-context";
 
 function ParentComponent() {
   return (
@@ -468,9 +465,9 @@ export default ParentComponent;
 context.tsx
 
 ```tsx
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext } from "react";
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = "light" | "dark" | "system";
 
 type ThemeProviderState = {
   theme: Theme;
@@ -488,7 +485,7 @@ type ThemeProviderProps = {
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'system',
+  defaultTheme = "system",
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
   return (
@@ -502,7 +499,7 @@ export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
 
   if (context === undefined)
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
 
   return context;
 };
@@ -511,7 +508,7 @@ export const useTheme = () => {
 Component.tsx
 
 ```tsx
-import { useTheme, ThemeProvider } from './context';
+import { useTheme, ThemeProvider } from "./context";
 
 function ParentComponent() {
   return (
@@ -531,13 +528,13 @@ function Component() {
       <h2>random component</h2>
       <button
         onClick={() => {
-          if (context.theme === 'dark') {
-            context.setTheme('system');
+          if (context.theme === "dark") {
+            context.setTheme("system");
             return;
           }
-          context.setTheme('dark');
+          context.setTheme("dark");
         }}
-        className='btn btn-center'
+        className="btn btn-center"
       >
         toggle theme
       </button>
@@ -545,4 +542,215 @@ function Component() {
   );
 }
 export default ParentComponent;
+```
+
+## 07 - Reducers
+
+- starter Code
+
+```tsx
+function Component() {
+  return (
+    <div>
+      <h2>Count: 0</h2>
+      <h2>Status:Active</h2>
+      <div ClassName="btn-container">
+        <button OnClick={() => console.log("increment")} className="btn">
+          Increment
+        </button>
+        <button onClick={() => console.log("decrement")} className="btn">
+          Decrement
+        </button>
+        <button onClick={() => console.log("reset")} className="btn">
+          Reset
+        </button>
+      </div>
+      <div className="btn-container">
+        <button onClick={() => console.log("set status to active")}>
+          set Status to Active
+        </button>
+        <button
+          className="btn"
+          onClick={() => console.log("set status to inactive")}
+        >
+          Set Status to Inactive
+        </button>
+      </div>
+    </div>
+  );
+}
+export default Component;
+```
+
+-reducer.ts
+
+```ts
+
+export type CounterState={
+  count :number;
+  status:string;
+
+};
+export const initialState:CounterState={
+  count :0;
+  status:'Pending...'
+}
+export const counterReducer =(
+  state:CounterState,
+  action:any
+):CounterState=>{
+  return state
+}
+```
+
+index.tsx
+
+```tsx
+import { useReducer } from "react";
+import { counterReducer, initialState } from "./reducer";
+
+function Component() {
+  const [state, dispatch] = useReducer(counterReducer, initialState);
+  return (
+    <div>
+      <h2>Count: {state.count}</h2>
+      <h2>Status: {state.status}</h2>
+    </div>
+  );
+}
+```
+
+- setup count action
+
+reducer
+
+```ts
+type UpdateCountAction = {
+  type: "increment" | "decrement" | "reset";
+};
+
+// Extend the union type for all possible actions
+type CounterAction = UpdateCountAction;
+
+export const counterReducer = (
+  state: CounterState,
+  action: CounterAction
+): CounterState => {
+  switch (action.type) {
+    case "increment":
+      return { ...state, count: state.count + 1 };
+    case "decrement":
+      return { ...state, count: state.count - 1 };
+    case "reset":
+      return { ...state, count: 0 };
+    default:
+      return state;
+  }
+};
+```
+
+index.tsx
+
+```tsx
+<div className="btn-container">
+  <button onClick={() => dispatch({ type: "increment" })} className="btn">
+    Increment
+  </button>
+  <button onClick={() => dispatch({ type: "decrement" })} className="btn">
+    Decrement
+  </button>
+  <button onClick={() => dispatch({ type: "reset" })} className="btn">
+    Reset
+  </button>
+</div>
+```
+
+- setup active action
+
+reducer.ts
+
+```ts
+export type CounterState = {
+  count: number;
+  status: string;
+};
+
+export const initialState: CounterState = {
+  count: 0,
+  status: "Pending...",
+};
+
+type UpdateCountAction = {
+  type: "increment" | "decrement" | "reset";
+};
+type SetStatusAction = {
+  type: "setStatus";
+  payload: "active" | "inactive";
+};
+
+// Extend the union type for all possible actions
+type CounterAction = UpdateCountAction | SetStatusAction;
+
+export const counterReducer = (
+  state: CounterState,
+  action: CounterAction
+): CounterState => {
+  switch (action.type) {
+    case "increment":
+      return { ...state, count: state.count + 1 };
+    case "decrement":
+      return { ...state, count: state.count - 1 };
+    case "reset":
+      return { ...state, count: 0 };
+    case "setStatus":
+      return { ...state, status: action.payload };
+    default:
+      const unhandledActionType: never = action;
+      throw new Error(
+        `Unexpected action type: ${unhandledActionType}. Please double check the counter reducer.`
+      );
+  }
+};
+```
+
+```tsx
+import { useReducer } from "react";
+import { counterReducer, initialState } from "./reducer";
+
+function Component() {
+  const [state, dispatch] = useReducer(counterReducer, initialState);
+  return (
+    <div>
+      <h2>Count: {state.count}</h2>
+      <h2>Status: {state.status}</h2>
+
+      <div className="btn-container">
+        <button onClick={() => dispatch({ type: "increment" })} className="btn">
+          Increment
+        </button>
+        <button onClick={() => dispatch({ type: "decrement" })} className="btn">
+          Decrement
+        </button>
+        <button onClick={() => dispatch({ type: "reset" })} className="btn">
+          Reset
+        </button>
+      </div>
+      <div className="btn-container">
+        <button
+          onClick={() => dispatch({ type: "setStatus", payload: "active" })}
+          className="btn"
+        >
+          Set Status to Active
+        </button>
+        <button
+          className="btn"
+          onClick={() => dispatch({ type: "setStatus", payload: "inactive" })}
+        >
+          Set Status to Inactive
+        </button>
+      </div>
+    </div>
+  );
+}
+export default Component;
 ```

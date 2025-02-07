@@ -2,7 +2,9 @@
 // import Component from "./learningFolder/01-return/index";
 // import Component from "./learningFolder/props/index";
 
-import Component from "./learningFolder/07-reducers";
+import Component from "./learningFolder/08-fetch-data/index";
+
+// import Component from "./learningFolder/07-reducers";
 
 // import Component from "./learningFolder/06-context/index";
 
